@@ -1,14 +1,21 @@
 /*-----VARIABLES AND DOM OBJECTS-----*/
 
 //define the body element
-let body = document.body;
+const body = document.body;
 
 //text boxes for values
-let rgbPanel = document.querySelector(".rgb-panel");
-let hexPanel = document.querySelector(".hex-panel");
+const rgbPanel = document.querySelector(".rgb-panel");
+const hexPanel = document.querySelector(".hex-panel");
+const btn = document.querySelector("button");
 
 // create rgb colors each parameter
 let r, g, b, fullRgb;
+
+// started or not check for button
+let started = false;
+
+//variable for interval
+let startInterval;
 
 /*-----FUNCTIONS-----*/
 
@@ -45,5 +52,23 @@ function applyAndWriteValues() {
   hexPanel.innerHTML = rgbToHex(r, g, b);
 }
 
-//refreshing color values every second
-setInterval(applyAndWriteValues, 1000);
+//initial start
+applyAndWriteValues();
+
+// button event listener
+btn.addEventListener("click", startStop);
+
+//start-stop function of the button
+function startStop() {
+  if (!started) {
+    //refreshing color values every second
+    startInterval = setInterval(applyAndWriteValues, 1000);
+    started = true;
+    btn.innerText = "Stop";
+  } else if (started) {
+    //stopping the interval
+    clearInterval(startInterval);
+    started = false;
+    btn.innerText = "Start";
+  }
+}
