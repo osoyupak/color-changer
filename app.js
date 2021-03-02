@@ -55,8 +55,10 @@ function applyAndWriteValues() {
 //initial start
 applyAndWriteValues();
 
-// button event listener
+// event listeners
 btn.addEventListener("click", startStop);
+rgbPanel.addEventListener("click", copyValue);
+hexPanel.addEventListener("click", copyValue);
 
 //start-stop function of the button
 function startStop() {
@@ -66,9 +68,25 @@ function startStop() {
     started = true;
     btn.innerText = "Stop";
   } else if (started) {
-    //stopping the interval
-    clearInterval(startInterval);
-    started = false;
-    btn.innerText = "Start";
+    stopInterval();
   }
+}
+
+//stop the interval
+function stopInterval() {
+  clearInterval(startInterval);
+  started = false;
+  btn.innerText = "Start";
+}
+
+//copying color values
+function copyValue() {
+  var selection = window.getSelection();
+  var range = document.createRange();
+  range.selectNodeContents(this);
+  selection.removeAllRanges();
+  selection.addRange(range);
+  document.execCommand("Copy");
+  alert("Copied color value: " + this.innerHTML);
+  stopInterval();
 }
